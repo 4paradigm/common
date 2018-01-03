@@ -323,10 +323,10 @@ void Logv(int log_level, const char* format, va_list ap) {
         char* p = base;
         char* limit = base + bufsize;
 
-        *p++ = cur_level;
-        *p++ = ' ';
-        int32_t rlen = timer::now_time_str(p, limit - p);
+        int32_t rlen = timer::now_time_str(p, limit - p, timer::kFull);
         p += rlen;
+        *p++ = ' ';
+        *p++ = cur_level;
         memcpy(p, tid_str, tid_str_len);
         p += tid_str_len;
 
