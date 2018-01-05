@@ -286,7 +286,7 @@ void Logv(int log_level, const char* format, va_list ap) {
     static __thread int tid_str_len = 0;
     if (thread_id == 0) {
         thread_id = syscall(__NR_gettid);
-        tid_str_len = snprintf(tid_str, sizeof(tid_str), " %5d ", static_cast<int32_t>(thread_id));
+        tid_str_len = snprintf(tid_str, sizeof(tid_str), " %d ", static_cast<int32_t>(thread_id));
     }
 
     static const char level_char[] = {
@@ -323,10 +323,10 @@ void Logv(int log_level, const char* format, va_list ap) {
         char* p = base;
         char* limit = base + bufsize;
 
-        *p++ = cur_level;
-        *p++ = ' ';
-        int32_t rlen = timer::now_time_str(p, limit - p);
+        int32_t rlen = timer::now_time_str(p, limit - p, timer::kFull);
         p += rlen;
+        *p++ = ' ';
+        *p++ = cur_level;
         memcpy(p, tid_str, tid_str_len);
         p += tid_str_len;
 

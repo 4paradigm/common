@@ -53,7 +53,7 @@ using common::FATAL;
 
 } // namespace baidu
 
-#define LOG(level, fmt, args...) ::baidu::common::Log(level, "[%s:%d] " fmt, __FILE__, __LINE__, ##args)
+#define PDLOG(level, fmt, args...) ::baidu::common::Log(level, "[%s:%d] " fmt, __FILE__, __LINE__, ##args)
 #define LOGS(level) ::baidu::common::LogStream(level)
 
 #endif  // BAIDU_COMMON_LOGGING_H_
