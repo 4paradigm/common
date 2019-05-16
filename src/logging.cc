@@ -371,12 +371,10 @@ void Logv(int log_level, const char* format, va_list ap) {
 }
 
 void Log(int level, const char* fmt, ...) {
+    if (level < g_log_level) return;
     va_list ap;
     va_start(ap, fmt);
-
-    if (level >= g_log_level) {
-        Logv(level, fmt, ap);
-    }
+    Logv(level, fmt, ap);
     va_end(ap);
     if (level == FATAL) {
         abort();
