@@ -43,7 +43,7 @@ std::set<std::string> g_warning_set;
 int64_t current_log_total_size = 0;
 int64_t current_warning_total_size = 0;
 
-bool GetNewLog(bool append, FILE** file, std::string& file_name, std::set<std::string>& log_set, int64_t& current_total_size) {
+bool GetNewLog(bool append, const std::string& file_name, FILE** file, std::set<std::string>& log_set, int64_t& current_total_size) {
     char buf[30];
     struct timeval tv;
     gettimeofday(&tv, NULL);
@@ -136,13 +136,13 @@ public:
                 if (g_log_file != stdout && g_log_size && str &&
                         static_cast<int64_t>(log_size_ + str->length()) > g_log_size) {
                     current_log_total_size += static_cast<int64_t>(log_size_ + str->length());
-                    GetNewLog(false, &g_log_file, g_log_file_name, g_log_set, current_log_total_size );
+                    GetNewLog(false, g_log_file_name, &g_log_file, g_log_set, current_log_total_size );
                     log_size_ = 0;
                 }
                 if (g_warning_file != stdout && log_level >= 8  && g_log_size && str &&
                         static_cast<int64_t>(warning_size_ + str->length()) > g_log_size) {
                     current_warning_total_size += static_cast<int64_t>(warning_size_ + str->length());
-                    GetNewLog(false, &g_warning_file, g_warning_file_name, g_warning_set, current_warning_total_size);
+                    GetNewLog(false, g_warning_file_name, &g_warning_file, g_warning_set, current_warning_total_size);
                     warning_size_ = 0;
                 }
                 if (str && !str->empty()) {
@@ -245,12 +245,12 @@ bool RecoverHistory(const char* path, std::set<std::string>& log_set, int64_t& c
 
 bool SetWarningFile(const char* path, bool append) {
     g_warning_file_name.assign(path);
-    return GetNewLog(append, &g_warning_file, g_warning_file_name, g_warning_set, current_warning_total_size);
+    return GetNewLog(append, g_warning_file_name, &g_warning_file, g_warning_set, current_warning_total_size);
 }
 
 bool SetLogFile(const char* path, bool append) {
     g_log_file_name.assign(path);
-    return GetNewLog(append, &g_log_file, g_log_file_name, g_log_set, current_log_total_size);
+    return GetNewLog(append, g_log_file_name, &g_log_file, g_log_set, current_log_total_size);
 }
 
 bool SetLogSize(int size) {
