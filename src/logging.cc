@@ -51,7 +51,8 @@ bool GetNewLog(bool append, const std::string& file_name, FILE** file, std::set<
     struct tm t;
     localtime_r(&seconds, &t);
     snprintf(buf, 30,
-        "%02d-%02d.%02d:%02d:%02d.%06d",
+        "%04d.%02d-%02d.%02d:%02d:%02d.%06d",
+        t.tm_year + 1900,
         t.tm_mon + 1,
         t.tm_mday,
         t.tm_hour,
