@@ -22,6 +22,7 @@ enum Precision {
     kDay,
     kMin,
     kUsec,
+    kFull,
 };
 
 static inline long get_micros() {
@@ -51,6 +52,15 @@ static inline int32_t now_time_str(char* buf, int32_t len, Precision p = kUsec) 
                 t.tm_mday,
                 t.tm_hour,
                 t.tm_min);
+    } else if (p == kFull) {
+        ret = snprintf(buf, len, "%04d-%02d-%02d %02d:%02d:%02d.%06d",
+            t.tm_year + 1900,
+            t.tm_mon + 1,
+            t.tm_mday,
+            t.tm_hour,
+            t.tm_min,
+            t.tm_sec,
+            static_cast<int>(tv.tv_usec));
     } else {
         ret = snprintf(buf, len, "%02d/%02d %02d:%02d:%02d.%06d",
             t.tm_mon + 1,
